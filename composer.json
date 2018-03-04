@@ -1,0 +1,29 @@
+{
+  "name": "color-gallery",
+  "type": "library",
+  "description": "Some interesting class libraries.",
+  "keywords": ["enum"],
+  "homepage": "https://github.com/ColorRabbit/ColorGallery",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ColorRabbit",
+      "homepage": "https://github.com/ColorRabbit/ColorGallery"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ColorGallery\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ColorGallery\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+  }
+}
