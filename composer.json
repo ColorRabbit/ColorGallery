@@ -2,7 +2,7 @@
   "name": "color-rabbit/color-gallery",
   "type": "library",
   "description": "Some interesting class libraries.",
-  "keywords": ["enum"],
+  "keywords": ["library"],
   "homepage": "https://github.com/ColorRabbit/ColorGallery",
   "license": "MIT",
   "authors": [
