@@ -8,30 +8,18 @@ namespace ColorGallery;
 class IdentityCard
 {
     /**
+     * 身份证号
+     *
      * @var string
      */
     private $identityCard = '';
 
     /**
-     * @var int
-     */
-    private $count = 0;
-
-    /**
-     * @var int
-     */
-    private $mod = 0;
-
-    /**
-     * @var array
-     */
-    private $identityArr = array();
-
-    /**
+     * 生成的最后一位身份证号
+     *
      * @var string
      */
     private $lastNum = '';
-
 
     /**
      * IdentityCard constructor.
@@ -41,22 +29,33 @@ class IdentityCard
     }
 
     /**
+     * 获取身份证号
+     *
      * @return string
      */
-    public function getIdentityCard()
+    public function getIdentityCard() :string
     {
         return $this->identityCard;
     }
 
     /**
+     * 设置身份证号
      * @param string $identityCard
+     *
+     * @throws Exception
      */
     public function setIdentityCard(string $identityCard)
     {
+        if ( ! preg_match_all('/^[\d]{17}[\d|x]{1}$/i', $identityCard, $match)) {
+            throw new \Exception('身份证格式不合法');
+        }
+
         $this->identityCard = $identityCard;
     }
 
     /**
+     * 获取生成的最后一位身份证号
+     *
      * @return string
      */
     public function getLastNum()
@@ -65,17 +64,20 @@ class IdentityCard
     }
 
     /**
-     * 进行效验身份
+     * 进行效验身份，匹配最后一位的身份证
      */
     public function identityLastNum()
     {
+        $count = 0;
+        $identityArr = [];
+
         for ($i = 0; $i <= 16; $i++) {
-            $this->identityArr[$i] = substr($this->getIdentityCard(), $i, 1);
-            $this->mod = (pow(2, 17 - $i) % 11) * $this->identityArr[$i];
-            $this->count = $this->count + $this->mod;
+            $identityArr[$i] = substr($this->getIdentityCard(), $i, 1);
+            // $mod = (pow(2, 17 - $i) % 11) * $this->identityArr[$i];
+            $count += (pow(2, 17 - $i) % 11) * $identityArr[$i];
         }
 
-        $avg = $this->count % 11;
+        $avg = $count % 11;
 
         switch ($avg) {
         case 0:
@@ -94,16 +96,21 @@ class IdentityCard
     }
 
     /**
+     * 核对身份证号
+     *
      * @return bool
      */
     public function checkIdentity()
     {
         $lastNum = substr($this->getIdentityCard(), -1, 1);
+
+        if (empty($this->lastNum)) {
+            $this->identityLastNum();
+        }
         if ($this->lastNum != $lastNum) {
             return false;
         }
 
         return true;
     }
-
 }
