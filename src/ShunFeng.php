@@ -106,6 +106,7 @@ class ShunFeng
     <Body>
         <Order 
           orderid="{$data['order_id']}" 
+          mailno="{$data['mail_no']}" 
           j_company="{$data['j_company']}" 
           j_contact="{$data['j_contact']}" 
           j_tel="{$data['j_tel']}" 
@@ -122,7 +123,8 @@ class ShunFeng
           d_county="{$data['d_county']}" 
           d_address="{$data['d_address']}" 
           pay_method="{$data['pay_method']}" 
-          express_type="1" parcel_quantity="1"
+          express_type="{$data['express_type']}"
+          parcel_quantity="{$data['parcel_quantity']}"
           is_gen_bill_no="{$data['is_gen_bill_no']}" 
           sendstarttime="{$data['send_start_time']}" 
           is_docall="{$data['is_docall']}" 
