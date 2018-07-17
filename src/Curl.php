@@ -21,7 +21,7 @@ class Curl
     /**
      * @var
      */
-    private static $url;
+    private $url;
 
     /**
      * @var
@@ -85,10 +85,14 @@ class Curl
 
     /**
      * @param string $cookieFile
+     *
+     * @return $this
      */
     public function setCookieFile($cookieFile)
     {
         $this->cookieFile = $cookieFile;
+
+        return $this;
     }
 
     /**
@@ -101,18 +105,26 @@ class Curl
 
     /**
      * @param string $cookieJar
+     *
+     * @return $this
      */
     public function setCookieJar($cookieJar)
     {
         $this->cookieJar = $cookieJar;
+
+        return $this;
     }
 
     /**
      * @param $url
+     *
+     * @return $this
      */
     public function setUrl($url)
     {
-        self::$url = $url;
+        $this->url = $url;
+
+        return $this;
     }
 
     /**
@@ -120,11 +132,21 @@ class Curl
      */
     public function getUrl()
     {
-        return self::$url;
+        return $this->url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurlType()
+    {
+        return $this->curlType;
     }
 
     /**
      * @param $type
+     *
+     * @return $this
      */
     public function setCurlType($type)
     {
@@ -135,14 +157,8 @@ class Curl
         if (strtoupper($type) == 'POST') {
             $this->curlType = self::POST;
         }
-    }
 
-    /**
-     * @return string
-     */
-    public function getCurlType()
-    {
-        return $this->curlType;
+        return $this;
     }
 
     /**
@@ -155,10 +171,14 @@ class Curl
 
     /**
      * @param string $referer
+     *
+     * @return $this
      */
     public function setReferer($referer)
     {
         $this->referer = $referer;
+
+        return $this;
     }
 
     /**
@@ -171,10 +191,14 @@ class Curl
 
     /**
      * @param string $userAgent
+     *
+     * @return $this
      */
     public function setUserAgent($userAgent)
     {
         $this->userAgent = $userAgent;
+
+        return $this;
     }
 
     /**
@@ -187,10 +211,14 @@ class Curl
 
     /**
      * @param bool $Ssl
+     *
+     * @return $this
      */
     public function setSsl($Ssl)
     {
         $this->Ssl = $Ssl;
+
+        return $this;
     }
 
     /**
@@ -203,18 +231,14 @@ class Curl
 
     /**
      * @param string $cookies
+     *
+     * @return $this
      */
     public function setCookies($cookies)
     {
         $this->cookies = $cookies;
-    }
 
-    /**
-     * @param $function
-     */
-    public function setFunction($function)
-    {
-        $this->function = $function;
+        return $this;
     }
 
     /**
@@ -226,6 +250,18 @@ class Curl
     }
 
     /**
+     * @param $function
+     *
+     * @return $this
+     */
+    public function setFunction($function)
+    {
+        $this->function = $function;
+
+        return $this;
+    }
+
+    /**
      * @param null|integer $key
      *
      * @return string
@@ -233,24 +269,10 @@ class Curl
     public function getRequestUrl($key = null)
     {
         if (is_null($key)) {
-            return static::$url . $this->function;
+            return $this->url . $this->function;
         }
 
-        return static::$url[$key] . $this->function[$key];
-    }
-
-    /**
-     * @param $parameter
-     *
-     * @throws \Exception
-     */
-    public function setParameter($parameter)
-    {
-        if (!is_array($parameter)) {
-            throw new \Exception('It must be array!!!');
-        }
-
-        $this->parameter = $parameter;
+        return $this->url[$key] . $this->function[$key];
     }
 
     /**
@@ -272,12 +294,29 @@ class Curl
     }
 
     /**
+     * @param $parameter
+     *
+     * @throws \Exception
+     * @return $this
+     */
+    public function setParameter($parameter)
+    {
+        if (!is_array($parameter)) {
+            throw new \Exception('It must be array!!!');
+        }
+
+        $this->parameter = $parameter;
+
+        return $this;
+    }
+
+    /**
      * @return mixed|string
      * @throws \Exception
      */
     public function curl()
     {
-        if (empty(static::$url)) {
+        if (empty($this->url)) {
             throw new \Exception('Please use setUrl(URL) set url!!!');
         }
 
@@ -342,14 +381,14 @@ class Curl
      */
     public function curlMulti()
     {
-        if (empty(static::$url)) {
+        if (empty($this->url)) {
             throw new \Exception('Please use setUrl(URL) set url!!!');
         }
 
         $curl = curl_multi_init();
 
         $conn = [];
-        foreach (static::$url as $key => $value) {
+        foreach ($this->url as $key => $value) {
             $conn[$key] = curl_init($value);
             $curlParameter = array(
                 CURLOPT_URL => $this->getRequestUrl($key),
