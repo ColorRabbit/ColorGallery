@@ -64,6 +64,11 @@ class Curl
     private $Ssl = false;
 
     /**
+     * @var
+     */
+    private $header = false;
+
+    /**
      * @var array
      */
     private $parameter = array();
@@ -244,6 +249,26 @@ class Curl
     /**
      * @return string
      */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    /**
+     * @param string $header
+     *
+     * @return $this
+     */
+    public function setHeader($header)
+    {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getFunction()
     {
         return $this->function;
@@ -334,11 +359,12 @@ class Curl
             CURLOPT_HEADER => false,
             CURLOPT_SSL_VERIFYPEER => $this->Ssl,
             CURLOPT_SSL_VERIFYHOST => $this->Ssl,
-            // CURLOPT_HTTPHEADER => array(
-            //     "cache-control: no-cache",
-            //     "content-type: application/x-www-form-urlencoded"
-            // ),
         );
+
+        if ( ! empty($this->header)) {
+            $this->header[CURLOPT_HEADER] = true;
+            $curlParameter[CURLOPT_HTTPHEADER] = $this->header;
+        }
 
         if ($this->referer) {
             $curlParameter[CURLOPT_REFERER] = $this->referer;
@@ -402,11 +428,12 @@ class Curl
                 CURLOPT_HEADER => false,
                 CURLOPT_SSL_VERIFYPEER => $this->Ssl[$key],
                 CURLOPT_SSL_VERIFYHOST => $this->Ssl[$key],
-                // CURLOPT_HTTPHEADER => array(
-                //     "cache-control: no-cache",
-                //     "content-type: application/x-www-form-urlencoded"
-                // ),
             );
+
+            if ( ! empty($this->header)) {
+                $this->header[CURLOPT_HEADER] = true;
+                $curlParameter[CURLOPT_HTTPHEADER] = $this->header;
+            }
 
             if ( ! empty($this->referer[$key])) {
                 $curlParameter[CURLOPT_REFERER] = $this->referer[$key];
