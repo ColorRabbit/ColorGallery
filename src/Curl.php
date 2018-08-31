@@ -61,7 +61,7 @@ class Curl
     /**
      * @var
      */
-    private $Ssl = false;
+    private $ssl = false;
 
     /**
      * @var
@@ -211,17 +211,17 @@ class Curl
      */
     public function getSsl()
     {
-        return $this->Ssl;
+        return $this->ssl;
     }
 
     /**
-     * @param bool $Ssl
+     * @param bool $ssl
      *
      * @return $this
      */
-    public function setSsl($Ssl)
+    public function setSsl($ssl)
     {
-        $this->Ssl = $Ssl;
+        $this->ssl = $ssl;
 
         return $this;
     }
@@ -357,8 +357,8 @@ class Curl
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HEADER => false,
-            CURLOPT_SSL_VERIFYPEER => $this->Ssl,
-            CURLOPT_SSL_VERIFYHOST => $this->Ssl,
+            CURLOPT_SSL_VERIFYPEER => $this->ssl,
+            CURLOPT_SSL_VERIFYHOST => $this->ssl,
         );
 
         if ( ! empty($this->header)) {
@@ -426,8 +426,8 @@ class Curl
                 CURLOPT_MAXREDIRS => 10,
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HEADER => false,
-                CURLOPT_SSL_VERIFYPEER => $this->Ssl[$key],
-                CURLOPT_SSL_VERIFYHOST => $this->Ssl[$key],
+                CURLOPT_SSL_VERIFYPEER => $this->ssl[$key],
+                CURLOPT_SSL_VERIFYHOST => $this->ssl[$key],
             );
 
             if ( ! empty($this->header)) {
