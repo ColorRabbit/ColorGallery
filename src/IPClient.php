@@ -29,7 +29,7 @@ class IPClient
      */
     public function __construct($ip = '')
     {
-        if (!empty($ip)) {
+        if ( ! empty($ip)) {
             $this->setIp($ip);
         }
     }
@@ -81,7 +81,7 @@ class IPClient
      */
     public function getIpClient($ip = '')
     {
-        if (!empty($ip)) {
+        if ( ! empty($ip)) {
             $this->setIp($ip);
         }
         $this->curlIpClient();
