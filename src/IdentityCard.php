@@ -40,9 +40,10 @@ class IdentityCard
 
     /**
      * 设置身份证号
+     *
      * @param string $identityCard
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function setIdentityCard(string $identityCard)
     {
