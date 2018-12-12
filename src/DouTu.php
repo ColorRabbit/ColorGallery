@@ -26,14 +26,6 @@ class DouTu
     }
 
     /**
-     * @param string $keyWord
-     */
-    public function setKeyWord($keyWord): void
-    {
-        $this->keyWord = $keyWord;
-    }
-
-    /**
      * @return string
      */
     public function getKeyWord(): string
@@ -42,9 +34,23 @@ class DouTu
     }
 
     /**
-     * @param int $mime
+     * @param mixed $keyWord
+     *
+     * @return self
      */
-    public function setMime(int $mime): void
+    public function setKeyWord($keyWord): self
+    {
+        $this->keyWord = $keyWord;
+
+        return $this;
+    }
+
+    /**
+     * @param int $mime
+     *
+     * @return DouTu
+     */
+    public function setMime(int $mime): self
     {
         if ($mime === self::MIME_ALL) {
             $this->mime = self::MIME_ALL;
@@ -57,6 +63,28 @@ class DouTu
         if ($mime === self::MIME_JPG) {
             $this->mime = self::MIME_JPG;
         }
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param int $page
+     *
+     * @return self
+     */
+    public function setPage(int $page): self
+    {
+        $this->page = $page;
+
+        return $this;
     }
 
     /**
