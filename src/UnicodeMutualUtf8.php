@@ -21,8 +21,8 @@ class UnicodeMutualUtf8
      *
      * @return string
      */
-    public static function utf8ToUnicode($utf8Str) {
-        $unicode = 0;
+    public static function utf8ToUnicode($utf8Str)
+    {
         $unicode = (ord($utf8Str[0]) & 0x1F) << 12;
         $unicode |= (ord($utf8Str[1]) & 0x3F) << 6;
         $unicode |= (ord($utf8Str[2]) & 0x3F);
@@ -36,8 +36,8 @@ class UnicodeMutualUtf8
      *
      * @return string
      */
-    public static function unicodeToUtf8($unicodeStr) {
-        $utf8Str = '';
+    public static function unicodeToUtf8($unicodeStr)
+    {
         $code = intval(hexdec($unicodeStr));
         //这里注意转换出来的code一定得是整形，这样才会正确的按位操作
         $ord1 = decbin(0xe0 | ($code >> 12));
