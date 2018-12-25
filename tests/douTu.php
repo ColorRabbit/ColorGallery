@@ -5,7 +5,9 @@
  * Date: 2018/2/14
  * Time: 11:03
  */
+
 namespace ColorGallery\tests;
+require_once '../vendor/autoload.php';
 
 use ColorGallery\DouTu;
 
