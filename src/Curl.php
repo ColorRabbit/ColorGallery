@@ -14,10 +14,6 @@ namespace ColorGallery;
  */
 class Curl
 {
-    const GET = 'GET';
-
-    const POST = 'POST';
-
     /**
      * @var
      */
@@ -67,6 +63,10 @@ class Curl
      * @var
      */
     private $header = false;
+    /**
+     * @var
+     */
+    private $httpHeader = [];
 
     /**
      * @var array
@@ -156,11 +156,11 @@ class Curl
     public function setCurlType($type)
     {
         if (strtoupper($type) == 'GET') {
-            $this->curlType = self::GET;
+            $this->curlType = 'GET';
         }
 
         if (strtoupper($type) == 'POST') {
-            $this->curlType = self::POST;
+            $this->curlType = 'POST';
         }
 
         return $this;
@@ -267,6 +267,26 @@ class Curl
     }
 
     /**
+     * @return mixed
+     */
+    public function getHttpHeader()
+    {
+        return $this->httpHeader;
+    }
+
+    /**
+     * @param mixed $httpHeader
+     *
+     * @return Curl
+     */
+    public function setHttpHeader($httpHeader)
+    {
+        $this->httpHeader = $httpHeader;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFunction()
@@ -305,17 +325,9 @@ class Curl
      *
      * @return string
      */
-    public function getParameter($parameter)
+    public function getParameter()
     {
-        $param = '';
-        if ( ! empty($parameter)) {
-            foreach ($parameter as $key => $value) {
-                $param .= $key . '=' . $value . '&';
-            }
-            return rtrim($param, '&');
-        }
-
-        return $param;
+        return json_encode($this->parameter);
     }
 
     /**
@@ -356,15 +368,10 @@ class Curl
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_HEADER => false,
+            CURLOPT_HEADER => $this->header,
             CURLOPT_SSL_VERIFYPEER => $this->ssl,
             CURLOPT_SSL_VERIFYHOST => $this->ssl,
         );
-
-        if ( ! empty($this->header)) {
-            $this->header[CURLOPT_HEADER] = true;
-            $curlParameter[CURLOPT_HTTPHEADER] = $this->header;
-        }
 
         if ($this->referer) {
             $curlParameter[CURLOPT_REFERER] = $this->referer;
@@ -374,17 +381,9 @@ class Curl
             $curlParameter[CURLOPT_USERAGENT] = $this->userAgent;
         }
 
-        if (empty($this->curlType) || $this->curlType === self::GET) {
-            if ( ! empty($this->parameter)) {
-                if ( ! empty($this->getParameter($this->parameter))) {
-                    $curlParameter[CURLOPT_URL] .= '?' . $this->getParameter($this->parameter);
-                }
-            }
-        }
-
-        if ($this->curlType === self::POST) {
-            $curlParameter[CURLOPT_CUSTOMREQUEST] = self::POST;
-            $curlParameter[CURLOPT_POSTFIELDS] = $this->getParameter($this->parameter);
+        if ($this->curlType === 'POST') {
+            $curlParameter[CURLOPT_CUSTOMREQUEST] = 'POST';
+            $curlParameter[CURLOPT_POSTFIELDS] = $this->getParameter();
         }
 
         curl_setopt_array($curl, $curlParameter);
@@ -426,14 +425,10 @@ class Curl
                 CURLOPT_MAXREDIRS => 10,
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HEADER => false,
+                CURLOPT_HTTPHEADER => $this->httpHeader,
                 CURLOPT_SSL_VERIFYPEER => $this->ssl[$key],
                 CURLOPT_SSL_VERIFYHOST => $this->ssl[$key],
             );
-
-            if ( ! empty($this->header)) {
-                $this->header[CURLOPT_HEADER] = true;
-                $curlParameter[CURLOPT_HTTPHEADER] = $this->header;
-            }
 
             if ( ! empty($this->referer[$key])) {
                 $curlParameter[CURLOPT_REFERER] = $this->referer[$key];
@@ -443,17 +438,9 @@ class Curl
                 $curlParameter[CURLOPT_USERAGENT] = $this->userAgent[$key];
             }
 
-            if (empty($this->curlType) || $this->curlType[$key] === 'GET') {
-                if ( ! empty($this->parameter[$key])) {
-                    if ( ! empty($this->getParameter($this->parameter[$key]))) {
-                        $curlParameter[CURLOPT_URL] .= '?' . $this->getParameter($this->parameter[$key]);
-                    }
-                }
-            }
-
             if ($this->curlType[$key] === 'POST') {
                 $curlParameter[CURLOPT_CUSTOMREQUEST] = 'POST';
-                $curlParameter[CURLOPT_POSTFIELDS] = $this->getParameter($this->parameter[$key]);
+                $curlParameter[CURLOPT_POSTFIELDS] = $this->getParameter();
             }
 
             curl_setopt_array($conn[$key], $curlParameter);
