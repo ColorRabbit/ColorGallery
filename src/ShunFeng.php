@@ -164,7 +164,7 @@ EOF;
         $info = $curl->setUrl($this->url)
                      ->setCurlType('POST')
                      ->setParameter(['xml' => $xml, 'verifyCode' => $verifyCode])
-                     ->curl()
+                     ->curl('xml')
         ;
 
         return $info;
