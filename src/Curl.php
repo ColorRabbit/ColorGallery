@@ -329,7 +329,25 @@ class Curl
     {
         return json_encode($this->parameter);
     }
+    
+    /**
+     * @param $parameter
+     *
+     * @return string
+     */
+    public function getXmlParameter()
+    {
+        $param = '';
+        if ( ! empty($this->parameter)) {
+            foreach ($this->parameter as $key => $value) {
+                $param .= $key . '=' . $value . '&';
+            }
+            return rtrim($param, '&');
+        }
 
+        return $param;
+    }
+    
     /**
      * @param $parameter
      *
@@ -351,7 +369,7 @@ class Curl
      * @return mixed|string
      * @throws \Exception
      */
-    public function curl()
+    public function curl($type = 'json')
     {
         if (empty($this->url)) {
             throw new \Exception('Please use setUrl(URL) set url!!!');
@@ -383,7 +401,11 @@ class Curl
 
         if ($this->curlType === 'POST') {
             $curlParameter[CURLOPT_CUSTOMREQUEST] = 'POST';
-            $curlParameter[CURLOPT_POSTFIELDS] = $this->getParameter();
+            if ($type == 'xml') {
+                $curlParameter[CURLOPT_POSTFIELDS] = $this->getXmlParameter();
+            } else {
+                $curlParameter[CURLOPT_POSTFIELDS] = $this->getParameter();
+            }
         }
 
         curl_setopt_array($curl, $curlParameter);
