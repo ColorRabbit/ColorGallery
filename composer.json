@@ -29,7 +29,7 @@
   "minimum-stability": "RC",
   "extra": {
     "branch-alias": {
-      "dev-master": "0.3.5-dev"
+      "dev-master": "0.3.6-dev"
     }
   }
 }
